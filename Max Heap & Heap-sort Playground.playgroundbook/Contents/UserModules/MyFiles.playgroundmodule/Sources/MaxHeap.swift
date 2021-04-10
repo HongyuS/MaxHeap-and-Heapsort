@@ -1,3 +1,9 @@
+//
+//  MaxHeap.swift
+//
+//  Copyright © 2021 Hongyu Shi. All rights reserved.
+//
+
 public struct MaxHeap<T> where T: Comparable {
     
     /// The array that stores the heap's nodes.
@@ -7,13 +13,15 @@ public struct MaxHeap<T> where T: Comparable {
     public init() {}
     
     /// Creates a heap from an arbitrary array.
-    public init(array: [T]) { heapify(from: array) }
+    public init(array: [T]) {
+        nodes = array
+        heapify()
+    }
     
     /// Configures the max-heap or from an array, in a bottom-up manner.
     /// ## Complexity
     /// O(*n*)
-    private mutating func heapify(from array: [T]) {
-        nodes = array
+    private mutating func heapify() {
         for i in stride(from: (nodes.count / 2 - 1), through: 0, by: -1) {
             autoShiftDown(from: i)
         }
@@ -109,29 +117,54 @@ public struct MaxHeap<T> where T: Comparable {
     
 }
 
-extension MaxHeap {
-    public struct Node: Comparable, Identifiable {
-        public let id: Int
-        public let value: T
-        
-        public init(_ value: T, id: Int) {
-            self.id = id
-            self.value = value
-        }
-        
-        public static func < (left: Self, right: Self) -> Bool {
-            left.value < right.value
-        }
-        public static func == (left: Self, right: Self) -> Bool {
-            left.value == right.value
-        }
-    }
-}
-
 extension MaxHeap: CustomStringConvertible {
     public var description: String { "\(nodes)" }
 }
 
-extension MaxHeap.Node: CustomStringConvertible {
-    public var description: String { "\(value)" }
+
+// MARK: - Utilities
+
+extension MaxHeap where T: Identifiable {
+    public mutating func shiftUp(_ index: Int) -> Int? {
+        guard let p = parentIndex(ofIndex: index) else { return nil }
+        if nodes[index] > nodes[p] {
+            nodes.swapAt(index, p)
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    public mutating func shiftDown(from index: Int) -> Int? {
+        var head = index
+        if let i = leftChildIndex(ofIndex: index), nodes[i] > nodes[head] {
+            head = i
+        }
+        if let j = rightChildIndex(ofIndex: index), nodes[j] > nodes[head] {
+            head = j
+        }
+        if head == index { return nil }
+        
+        nodes.swapAt(index, head)
+        return head
+    }
+    
+    public func childern(of node: T) -> [T] {
+        var children = [T]()
+        guard let i = index(of: node) else { return children }
+        guard let leftChildIndex = leftChildIndex(ofIndex: i) else { return children }
+        children.append(nodes[leftChildIndex])
+        guard let rightChildIndex = rightChildIndex(ofIndex: i) else { return children }
+        children.append(nodes[rightChildIndex])
+        return children
+    }
+    
+    public func index(of node: T) -> Int? {
+        for i in 0 ..< count {
+            if nodes[i].id == node.id {
+                return i
+            }
+        }
+        return nil
+    }
 }

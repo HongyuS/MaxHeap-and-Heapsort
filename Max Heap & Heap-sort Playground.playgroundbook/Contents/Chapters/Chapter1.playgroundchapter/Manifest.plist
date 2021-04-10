@@ -4,12 +4,10 @@
 <dict>
 	<key>InitialUserPages</key>
 	<array>
-		<string>29E75634-EC4D-415A-8D74-B5A05FF00C28.playgroundpage</string>
-		<string>2D5A3666-F004-4FB8-96CF-42ABD5860E2E.playgroundpage</string>
+		<string>Page1.playgroundpage</string>
+		<string>Page2.playgroundpage</string>
 	</array>
 	<key>Name</key>
-	<string>My Playground</string>
-	<key>TemplatePageFilename</key>
-	<string>Template.playgroundpage</string>
+	<string>Heap-sort</string>
 </dict>
 </plist>

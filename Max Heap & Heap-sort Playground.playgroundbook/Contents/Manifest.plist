@@ -21,7 +21,7 @@
 	<key>UserAutoImportedAuxiliaryModules</key>
 	<array/>
 	<key>UserModuleMode</key>
-	<string>Full</string>
+	<string>Limited</string>
 	<key>Version</key>
 	<string>8.0</string>
 </dict>

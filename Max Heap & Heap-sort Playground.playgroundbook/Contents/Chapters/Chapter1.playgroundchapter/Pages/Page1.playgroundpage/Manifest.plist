@@ -3,10 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>LiveViewEdgeToEdge</key>
-	<false/>
+	<true/>
 	<key>LiveViewMode</key>
-	<string>HiddenByDefault</string>
+	<string>VisibleByDefault</string>
 	<key>Name</key>
 	<string>Heapsort Explained</string>
+	<key>PlaygroundLoggingMode</key>
+	<string>Off</string>
+	<key>UserModuleSourceFilesToOpen</key>
+	<array>
+		<string>UserModules/MyFiles.playgroundmodule/Sources/MaxHeap.swift</string>
+	</array>
 </dict>
 </plist>

@@ -2,75 +2,11 @@ import SwiftUI
 import PlaygroundSupport
 
 //  let array = [16, 7, 22, 19, 12]
-//  var heap = MaxHeap(array: array)
-//  print(heap)
-//  while !heap.isEmpty {
-//      print(heap.remove()!)
-//      print(heap)
-//  }
 
 // MARK: - Model
-struct Node<T>: Comparable, Identifiable where T: Comparable {
-    let id: Int
-    let value: T
-    
-    init(_ value: T, id: Int) {
-        self.id = id
-        self.value = value
-    }
-    
-    static func < (left: Self, right: Self) -> Bool {
-        left.value < right.value
-    }
-    static func == (left: Self, right: Self) -> Bool {
-        left.value == right.value
-    }
-}
 
-extension MaxHeap where T: Identifiable {
-    mutating func shiftUp(_ index: Int) -> Int? {
-        guard let p = parentIndex(ofIndex: index) else { return nil }
-        if nodes[index] > nodes[p] {
-            nodes.swapAt(index, p)
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func shiftDown(from index: Int) -> Int? {
-        var head = index
-        if let i = leftChildIndex(ofIndex: index), nodes[i] > nodes[head] {
-            head = i
-        }
-        if let j = rightChildIndex(ofIndex: index), nodes[j] > nodes[head] {
-            head = j
-        }
-        if head == index { return nil }
-        
-        nodes.swapAt(index, head)
-        return head
-    }
-    
-    func childern(of node: T) -> [T] {
-        var children = [T]()
-        guard let i = index(of: node) else { return children }
-        guard let leftChildIndex = leftChildIndex(ofIndex: i) else { return children }
-        children.append(nodes[leftChildIndex])
-        guard let rightChildIndex = rightChildIndex(ofIndex: i) else { return children }
-        children.append(nodes[rightChildIndex])
-        return children
-    }
-    
-    func index(of node: T) -> Int? {
-        for i in 0 ..< count {
-            if nodes[i].id == node.id {
-                return i
-            }
-        }
-        return nil
-    }
-}
+
+
 
 
 // MARK: - ViewModel
