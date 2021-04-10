@@ -16,6 +16,10 @@
 	<string>en</string>
 	<key>HasMeaningfulResetPoint</key>
 	<true/>
+	<key>MinimumSwiftPlaygroundsVersion</key>
+	<string>3.4</string>
+	<key>SupportsDarkMode</key>
+	<true/>
 	<key>SwiftVersion</key>
 	<string>5.3</string>
 	<key>UserAutoImportedAuxiliaryModules</key>

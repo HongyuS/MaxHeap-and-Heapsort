@@ -7,25 +7,32 @@
 public struct MaxHeap<T> where T: Comparable {
     
     /// The array that stores the heap's nodes.
-    public var nodes = [T]()
+    public var nodes = [T]() {
+        set {
+            tree = Tree(array: newValue)
+        }
+    }
+    
+    public var tree: Tree<T>?
     
     /// Creates an empty max-heap.
     public init() {}
     
-    /// Creates a heap from an arbitrary array.
+    /// Initialize from an array unheapified.
+    /// Must be heapified before sorting.
     public init(array: [T]) {
         nodes = array
-        heapify()
+        // heapify()
     }
     
     /// Configures the max-heap or from an array, in a bottom-up manner.
     /// ## Complexity
     /// O(*n*)
-    private mutating func heapify() {
-        for i in stride(from: (nodes.count / 2 - 1), through: 0, by: -1) {
-            autoShiftDown(from: i)
-        }
-    }
+    // private mutating func heapify() {
+    //     for i in stride(from: (nodes.count / 2 - 1), through: 0, by: -1) {
+    //         autoShiftDown(from: i)
+    //     }
+    // }
     
     public var isEmpty: Bool { nodes.isEmpty }
     public var count: Int { nodes.count }
@@ -91,50 +98,32 @@ public struct MaxHeap<T> where T: Comparable {
         }
     }
     
-    /// Takes a child node and looks at its parent; if the child is greater than its parent, we exchange them, and check agian (recursively), until the heap property is restored.
+    /// Shift up from a node recursively, until the heap property is restored.
     private mutating func autoShiftUp(_ index: Int) {
-        guard let p = parentIndex(ofIndex: index) else { return }
-        if nodes[index] > nodes[p] {
-            nodes.swapAt(index, p)
+        if let p = shiftUp(index) {
             autoShiftUp(p)
         }
     }
     
-    /// Looks at a node and makes sure it is not smaller than its childeren; if not, we swap them, and check agian (recursively), until the heap property is restored.
+    /// Shift down from a node recursively, until the heap property is restored.
     private mutating func autoShiftDown(from index: Int) {
-        var head = index
-        if let i = leftChildIndex(ofIndex: index), nodes[i] > nodes[head] {
-            head = i
-        }
-        if let j = rightChildIndex(ofIndex: index), nodes[j] > nodes[head] {
-            head = j
-        }
-        if head == index { return }
-        
-        nodes.swapAt(index, head)
+        let head = shiftDown(from: index)
         autoShiftDown(from: head)
     }
     
-}
-
-extension MaxHeap: CustomStringConvertible {
-    public var description: String { "\(nodes)" }
-}
-
-
-// MARK: - Utilities
-
-extension MaxHeap where T: Identifiable {
+    /// Takes a child node and looks at its parent; if the child is greater than its parent, we exchange them.
     public mutating func shiftUp(_ index: Int) -> Int? {
         guard let p = parentIndex(ofIndex: index) else { return nil }
         if nodes[index] > nodes[p] {
             nodes.swapAt(index, p)
+            tree = Tree(array: nodes)
             return p
         } else {
             return nil
         }
     }
     
+    /// Looks at a node and makes sure it is not smaller than its childeren; if not, we swap them.
     public mutating func shiftDown(from index: Int) -> Int? {
         var head = index
         if let i = leftChildIndex(ofIndex: index), nodes[i] > nodes[head] {
@@ -146,25 +135,12 @@ extension MaxHeap where T: Identifiable {
         if head == index { return nil }
         
         nodes.swapAt(index, head)
+        tree = Tree(array: nodes)
         return head
     }
-    
-    public func childern(of node: T) -> [T] {
-        var children = [T]()
-        guard let i = index(of: node) else { return children }
-        guard let leftChildIndex = leftChildIndex(ofIndex: i) else { return children }
-        children.append(nodes[leftChildIndex])
-        guard let rightChildIndex = rightChildIndex(ofIndex: i) else { return children }
-        children.append(nodes[rightChildIndex])
-        return children
-    }
-    
-    public func index(of node: T) -> Int? {
-        for i in 0 ..< count {
-            if nodes[i].id == node.id {
-                return i
-            }
-        }
-        return nil
-    }
+}
+
+extension MaxHeap: CustomStringConvertible {
+    /// String description of a max-heap.
+    public var description: String { "\(nodes)" }
 }

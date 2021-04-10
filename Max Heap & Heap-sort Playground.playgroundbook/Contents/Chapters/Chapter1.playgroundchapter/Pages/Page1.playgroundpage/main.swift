@@ -1,69 +1,36 @@
 import SwiftUI
 import PlaygroundSupport
 
-//  let array = [16, 7, 22, 19, 12]
+// let array = [16, 7, 22, 19, 12]
 
-// MARK: - Model
+// MARK: - Public Functions
 
-
-
-
-
-// MARK: - ViewModel
-
-class MaxHeapsort: ObservableObject {
-    @Published private var heap = MaxHeap<Node<Int>>()
-    
-    // MARK: Access to the model
-    // because it's a private var
-    var nodes: [Node<Int>] { heap.nodes }
-    var isEmpty: Bool { heap.isEmpty }
-    var count: Int { heap.count }
-    
-    // MARK: Intents
-    
-    func insert(_ node: Node<Int>) {
-        heap.nodes.append(node)
-        delayedAutoShiftUp(count - 1)
+/*:
+ Configures the max-heap or from an array, in a bottom-up manner.
+ ## Complexity
+ O(*n*)
+ */
+func heapify(heap: inout MaxHeap) {
+    for i in stride(from: (heap.nodes.count / 2 - 1), through: 0, by: -1) {
+        shiftDown(from: i, heap: &heap)
     }
-    
-    func remove() -> Node<Int>? {
-        guard !isEmpty else { return nil }
-        
-        if count == 1 {
-            return heap.nodes.removeLast()
-        } else {
-            let value = nodes[0]
-            heap.nodes[0] = heap.nodes.removeLast()
-            delayedAutoShiftDown(from: 0)
-            return value
-        }
+}
+
+/*:
+ Shift up from a node recursively, until the heap property is restored.
+ */
+func shiftUp(_ index: Int, heap: inout MaxHeap) {
+    if let p = heap.shiftUp(index) {
+        shiftUp(p, heap: &heap)
     }
-    
-    func delayedAutoShiftUp(_ index: Int) {
-        if let parentIndex = heap.shiftUp(index) {
-            delay(1) {
-                self.delayedAutoShiftUp(parentIndex)
-            }
-        }
-    }
-    
-    func delayedAutoShiftDown(from index: Int) {
-        if let head = heap.shiftDown(from: index) {
-            delay(1) {
-                self.delayedAutoShiftDown(from: head)
-            }
-        }
-    }
-    
-    func children(of node: Node<Int>) -> [Node<Int>] {
-        heap.childern(of: node)
-    }
-    
-    func peek() -> Node<Int>? {
-        heap.peek()
-    }
-    
+}
+
+/*:
+ Shift down from a node recursively, until the heap property is restored.
+ */
+func shiftDown(from index: Int, heap: inout MaxHeap) {
+    let head = heap.shiftDown(from: index)
+    shiftDown(from: head, heap: &heap)
 }
 
 
@@ -73,7 +40,6 @@ struct ContentView: View {
     @StateObject private var viewModel = MaxHeapsort()
     @State private var text = ""
     @State private var isEditing = false
-    @State private var original = [Node<Int>]()
     @State private var sorted = [Node<Int>]()
     var body: some View {
         VStack(spacing: 0) {
@@ -81,26 +47,29 @@ struct ContentView: View {
                 TextField("Input integers here (separated by space)", text: $text) { isEditing in
                     self.isEditing = isEditing
                 } onCommit: {
-                    original.removeAll()
+                    var input = [Node<Int>]()
                     for str in text.split(separator: " ") {
                         if let value = Int(str) {
-                            original.append(Node(value, id: original.count))
+                            input.append(Node(value, id: original.count))
                         }
                     }
                     text.removeAll()
+                    
+                    viewModel = MaxHeapsort(from: input)
+                    viewModel.heapify()
                 }
                 .disableAutocorrection(true)
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
             
-            arrayView(original)
+            arrayView(viewModel.nodes)
                 .background(Color.blue)
             
             Spacer()
             
             if !viewModel.isEmpty {
-                HeapView(viewModel, root: viewModel.peek()!)
+                TreeView(tree: viewModel.tree!)
                     .padding()
             }
             
@@ -110,14 +79,14 @@ struct ContentView: View {
                 .background(Color.green)
             
             HStack {
-                button("Make Heap") {
-                    while !original.isEmpty {
-                        viewModel.insert(original.removeFirst())
-                    }
-                }
-                Spacer()
+//                button("Make Heap") {
+//                    while !original.isEmpty {
+//                        viewModel.insert(original.removeFirst())
+//                    }
+//                }
+//                Spacer()
                 button("Sort") {
-                    if !viewModel.isEmpty {
+                    while !viewModel.isEmpty {
                         sorted.append(viewModel.remove()!)
                     }
                 }
@@ -156,77 +125,6 @@ extension ContentView {
         .background(Color.accentColor)
         .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding, style: .continuous))
     }
-}
-
-struct HeapView: View {
-    var viewModel: MaxHeapsort
-    let root: Node<Int>
-    
-    init(_ viewModel: MaxHeapsort, root: Node<Int>) {
-        print(root.value)
-        self.viewModel = viewModel
-        self.root = root
-    }
-    
-    typealias Key = CollectDict<Node<Int>.ID, Anchor<CGPoint>>
-    
-    var body: some View {
-        VStack(alignment: .center) {
-            NodeView(node: root)
-                .anchorPreference(key: Key.self, value: .center) {
-                    [self.root.id: $0]
-                }
-            HStack(alignment: .top, spacing: DrawingConstants.nodeSize) {
-                ForEach(viewModel.children(of: self.root), id: \.id) { child in
-                    HeapView(viewModel, root: child)
-                }
-            }
-        }
-    }
-}
-
-struct CollectDict<Key: Hashable, Value>: PreferenceKey {
-    static var defaultValue: [Key: Value] { [:] }
-    static func reduce(value: inout [Key : Value], nextValue: () -> [Key : Value]) {
-        value.merge(nextValue(), uniquingKeysWith: { $1 })
-    }
-}
-
-struct NodeView: View {
-    let node: Node<Int>
-    var body: some View {
-        Text("\(node.value)")
-            .nodity()
-    }
-}
-
-struct Nodity: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .frame(width: DrawingConstants.nodeSize, height: DrawingConstants.nodeSize, alignment: .center)
-            .background(Circle().stroke())
-            .background(Circle().fill(Color(.secondarySystemBackground)))
-            .padding(2)
-            .shadow(radius: 2)
-    }
-}
-
-extension View {
-    func nodity() -> some View {
-        self.modifier(Nodity())
-    }
-}
-
-struct DrawingConstants {
-    static let nodeSize: CGFloat = 36
-    static let edgePadding: CGFloat = 16
-    static let duration: Double = 0.5
-}
-
-// MARK: - Utilities
-func delay(_ delay: Double, work: @escaping () -> ()) {
-    let when = DispatchTime.now() + delay
-    DispatchQueue.main.asyncAfter(deadline: when, execute: work)
 }
 
 
