@@ -142,7 +142,7 @@ extension Array {
         return 2 * i + 2
     }
     
-    /// Looks at a node and makes sure it is not smaller than its childeren; if not, we swap them, and check agian (recursively), until the heap property is restored.
+    /// Looks at a node and makes sure it is not smaller than its children; if not, we swap them, and check agian (recursively), until the heap property is restored.
     /// - parameter index: The starting index.
     /// - parameter endIndex: The index after the ending index.
     /// - parameter compare: A predicate that returns `true` if its first argument should be ordered before its second argument; otherwise, `false`.
