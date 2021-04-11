@@ -1,8 +1,4 @@
 # Max Heap-sort Visulized Using SwiftUI
- 
- **Implementation of Max Heap and Heapsort**
-
- **Requirments:** Please refer to the section "Heaps" of *Chapter 5* to construct a max heap for a given sequence of unsorted numbers. After the construction of **max heap**, please implement a **heapsort** by using the constructed max heap, with reference to the heapsort algorithm mentioned in *Chapter 6*.
 
  **Input**: A sequence of unsorted numbers, such as: 16, 7, 22, 19, and 12.
  
