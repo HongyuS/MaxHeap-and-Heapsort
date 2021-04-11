@@ -21,7 +21,7 @@ public struct Node<T>: Comparable, Identifiable where T: Comparable {
     }
 }
 
-public struct Tree<T> where T: Identifiable {
+public struct Tree<T> {
     
     public var value: T
     public var children: [Tree<T>] = []
@@ -33,18 +33,23 @@ public struct Tree<T> where T: Identifiable {
     
     public init(array: [T]) {
         assert(!array.isEmpty, "Array is empty")
-        var left = [T]
-        var right = [T]
+        var left = [T]()
+        var right = [T]()
         for i in 1 ..< array.count {
-            if isLeftChild(i) {
+            if Tree<T>.isLeftChild(i) {
                 left.append(array[i])
             } else {
                 right.append(array[i])
             }
         }
         self.value = array[0]
-        self.children = [Tree(array: left), Tree(array: right)]
-        
+        self.children = []
+        if !left.isEmpty {
+            children.append(Tree(array: left))
+        }
+        if !right.isEmpty {
+            children.append(Tree(array: right))
+        }
     }
     
     private static func parentIndex(ofIndex i: Int) -> Int {

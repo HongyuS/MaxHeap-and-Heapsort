@@ -10,9 +10,13 @@ import SwiftUI
 public struct TreeView: View {
     let tree: Tree<Node<Int>>
     
+    public init(_ tree: Tree<Node<Int>>) {
+        self.tree = tree
+    }
+    
     typealias Key = CollectDict<Node<Int>.ID, Anchor<CGPoint>>
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .center) {
             NodeView(node: tree.value)
                 .anchorPreference(key: Key.self, value: .center) {
@@ -20,7 +24,17 @@ public struct TreeView: View {
                 }
             HStack(alignment: .top, spacing: DrawingConstants.nodeSize) {
                 ForEach(tree.children, id: \.value.id) { child in
-                    TreeView(tree: child)
+                    TreeView(child)
+                }
+            }
+        }
+        .backgroundPreferenceValue(Key.self) { (centers: [Node<Int>.ID: Anchor<CGPoint>]) in
+            GeometryReader { proxy in
+                ForEach(self.tree.children, id: \.value.id) { child in
+                    Line(
+                        from: proxy[centers[self.tree.value.id]!],
+                        to: proxy[centers[child.value.id]!]
+                    ).stroke()
                 }
             }
         }
@@ -38,7 +52,12 @@ struct CollectDict<Key: Hashable, Value>: PreferenceKey {
 // MARK: - Node View
 public struct NodeView: View {
     let node: Node<Int>
-    var body: some View {
+    
+    public init(node: Node<Int>) {
+        self.node = node
+    }
+    
+    public var body: some View {
         Text("\(node.value)")
             .nodity()
     }
@@ -65,11 +84,11 @@ extension View {
 struct Line: Shape {
     var from: CGPoint
     var to: CGPoint
-    var animatableData: AnimatablePair<CGPoint, CGPoint> {
-        get { AnimatablePair(from, to) }
+    var animatableData: AnimatablePair<CGPoint.AnimatableData, CGPoint.AnimatableData> {
+        get { AnimatablePair(from.animatableData, to.animatableData) }
         set {
-            from = newValue.first
-            to = newValue.second
+            from.animatableData = newValue.first
+            to.animatableData = newValue.second
         }
     }
 
@@ -83,8 +102,8 @@ struct Line: Shape {
 
 
 // MARK: - Drawing Constants
-struct DrawingConstants {
-    static let nodeSize: CGFloat = 36
-    static let edgePadding: CGFloat = 16
-    static let duration: Double = 0.5
+public struct DrawingConstants {
+    public static let nodeSize: CGFloat = 36
+    public static let edgePadding: CGFloat = 16
+    public static let duration: Double = 0.5
 }

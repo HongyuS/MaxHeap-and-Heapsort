@@ -8,8 +8,10 @@ public struct MaxHeap<T> where T: Comparable {
     
     /// The array that stores the heap's nodes.
     public var nodes = [T]() {
-        set {
-            tree = Tree(array: newValue)
+        didSet {
+            if !nodes.isEmpty {
+                tree = Tree(array: nodes)
+            }
         }
     }
     
@@ -19,8 +21,15 @@ public struct MaxHeap<T> where T: Comparable {
     public init() {}
     
     /// Initialize from an array unheapified.
-    /// Must be heapified before sorting.
     public init(array: [T]) {
+        nodes = array
+        heapify()
+    }
+    
+    /// Resets the heap from an array.
+    ///
+    /// **Note:** Must be heapified before doing anything else.
+    public mutating func reset(from array: [T]) {
         nodes = array
         // heapify()
     }
@@ -28,32 +37,32 @@ public struct MaxHeap<T> where T: Comparable {
     /// Configures the max-heap or from an array, in a bottom-up manner.
     /// ## Complexity
     /// O(*n*)
-    // private mutating func heapify() {
-    //     for i in stride(from: (nodes.count / 2 - 1), through: 0, by: -1) {
-    //         autoShiftDown(from: i)
-    //     }
-    // }
+    private mutating func heapify() {
+        for i in stride(from: (nodes.count / 2 - 1), through: 0, by: -1) {
+            autoShiftDown(from: i)
+        }
+    }
     
     public var isEmpty: Bool { nodes.isEmpty }
     public var count: Int { nodes.count }
     
     /// Returns the index of the parent of the element at index *i*.
     /// The element at index `0` is the root of the tree and has no parent.
-    public func parentIndex(ofIndex i: Int) -> Int? {
+    private func parentIndex(ofIndex i: Int) -> Int? {
         guard i > 0 && i < nodes.count else { return nil }
         return (i - 1) / 2
     }
     
     /// Returns the index of the left child of the element at index *i*.
     /// If there is no left child, this method returns `nil`.
-    public func leftChildIndex(ofIndex i: Int) -> Int? {
+    private func leftChildIndex(ofIndex i: Int) -> Int? {
         guard 2 * i + 1 < nodes.count else { return nil }
         return 2 * i + 1
     }
     
     /// Returns the index of the right child of the element at index *i*.
     /// If there is no right child, this method returns `nil`.
-    public func rightChildIndex(ofIndex i: Int) -> Int? {
+    private func rightChildIndex(ofIndex i: Int) -> Int? {
         guard 2 * i + 2 < nodes.count else { return nil }
         return 2 * i + 2
     }
@@ -107,8 +116,9 @@ public struct MaxHeap<T> where T: Comparable {
     
     /// Shift down from a node recursively, until the heap property is restored.
     private mutating func autoShiftDown(from index: Int) {
-        let head = shiftDown(from: index)
-        autoShiftDown(from: head)
+        if let head = shiftDown(from: index) { 
+            autoShiftDown(from: head)
+        }
     }
     
     /// Takes a child node and looks at its parent; if the child is greater than its parent, we exchange them.
