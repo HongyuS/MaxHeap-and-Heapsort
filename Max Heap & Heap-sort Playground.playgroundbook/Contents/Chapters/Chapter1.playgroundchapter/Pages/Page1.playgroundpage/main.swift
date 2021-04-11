@@ -161,13 +161,14 @@ struct ContentView: View {
                 viewModel.heapify()
             }
             .disableAutocorrection(true)
+            .keyboardType(.numbersAndPunctuation)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
             .disabled(!viewModel.isEmpty)
             //#-end-hidden-code
             
             /// Displays the heap as an array.
-            arrayView(viewModel.nodes)
+            arrayView(viewModel.nodes, label: "Heap")
                 .padding(.horizontal)
             
             Spacer()
@@ -181,7 +182,7 @@ struct ContentView: View {
             Spacer()
             
             /// Displays the sorted array.
-            arrayView(sorted)
+            arrayView(sorted, label: "Sorted")
                 .padding(.horizontal)
             
             /// "Next Step" Button
@@ -198,23 +199,32 @@ struct ContentView: View {
 
 //#-hidden-code
 extension ContentView {
-    @ViewBuilder func arrayView(_ array: [Node<Int>]) -> some View {
+    @ViewBuilder func arrayView(_ array: [Node<Int>], label: String) -> some View {
         let rows = [GridItem](repeating: .init(.fixed(DrawingConstants.nodeSize)), count: 1)
-        ScrollView(.horizontal, showsIndicators: false) {
-            LazyHGrid(rows: rows, alignment: .center) {
-                ForEach(array) { node in
-                    NodeView(node: node)
+        
+        HStack(spacing: DrawingConstants.edgePadding / 2) {
+            Text(label)
+                .font(.headline)
+                .frame(width: DrawingConstants.textLabelWidth, height: DrawingConstants.nodeSize + DrawingConstants.edgePadding)
+                .padding(.horizontal, DrawingConstants.edgePadding / 2)
+                .background(Color.accentColor.opacity(0.25))
+                .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding / 2, style: .continuous))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: rows, alignment: .center) {
+                    ForEach(array) { node in
+                        NodeView(node: node)
+                    }
                 }
             }
+            .frame(height: DrawingConstants.nodeSize + DrawingConstants.edgePadding)
+            .padding(.horizontal, DrawingConstants.edgePadding / 2)
+            .background(Color.accentColor.opacity(0.75))
+            .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding / 2, style: .continuous))
         }
-        .frame(height: DrawingConstants.nodeSize + DrawingConstants.edgePadding)
-        .padding(.leading, DrawingConstants.edgePadding / 2)
-        .padding(.trailing, DrawingConstants.edgePadding / 2)
-        .background(Color.accentColor.opacity(0.75))
-        .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding / 2, style: .continuous))
     }
     
-    @ViewBuilder func button(_ label: String, action: @escaping () -> ()) -> some View {
+    @ViewBuilder func button(_ label: String, action: @escaping () -> Void) -> some View {
         Button {
             withAnimation(.easeInOut(duration: DrawingConstants.duration)) {
                 action()

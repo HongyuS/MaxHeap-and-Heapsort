@@ -113,5 +113,6 @@ struct Line: Shape {
 public struct DrawingConstants {
     public static let nodeSize: CGFloat = 36
     public static let edgePadding: CGFloat = 16
+    public static let textLabelWidth: CGFloat = 76
     public static let duration: Double = 0.5
 }
