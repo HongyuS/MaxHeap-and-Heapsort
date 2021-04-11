@@ -9,8 +9,6 @@
 	<key>Name</key>
 	<string>Array+Heapsort</string>
 	<key>UserModuleSourceFilesToOpen</key>
-	<array>
-		<string>UserModules/MyFiles.playgroundmodule/Sources/Array+Heapsort.swift</string>
-	</array>
+	<array/>
 </dict>
 </plist>

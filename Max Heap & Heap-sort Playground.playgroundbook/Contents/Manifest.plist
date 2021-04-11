@@ -9,7 +9,7 @@
 	<key>ContentIdentifier</key>
 	<string>cn.edu.cuhk.hongyushi.max-heap-and-heap-sort</string>
 	<key>ContentVersion</key>
-	<string>0.1</string>
+	<string>1.0</string>
 	<key>DeploymentTarget</key>
 	<string>ios-current</string>
 	<key>DevelopmentRegion</key>

@@ -29,7 +29,7 @@ import PlaygroundSupport
  You can input another array of integers when the previous array is fully sorted.
  
  **GitHub Page**:
- https://github.com/HongyuS/MazeProblem
+ https://github.com/HongyuS/MaxHeap-and-Heapsort
  */
 // let array = [16, 7, 22, 19, 12]
 
@@ -39,34 +39,37 @@ import PlaygroundSupport
  
  **Complexity**: O(*n*)
  */
+//#-editable-code
 func heapify(heap: inout MaxHeap<Node<Int>>) {
     for i in stride(from: (heap.nodes.count / 2 - 1), through: 0, by: -1) {
         shiftDown(from: i, heap: &heap)
     }
 }
-
+//#-end-editable-code
 /*:
  Shift up from a node recursively, until the heap property is restored.
  
  **Complexity**: O(log *n*)
  */
+//#-editable-code
 func shiftUp(_ index: Int, heap: inout MaxHeap<Node<Int>>) {
     if let p = heap.shiftUp(index) {
         shiftUp(p, heap: &heap)
     }
 }
-
+//#-end-editable-code
 /*:
  Shift down from a node recursively, until the heap property is restored.
  
  **Complexity**: O(log *n*)
  */
+//#-editable-code
 func shiftDown(from index: Int, heap: inout MaxHeap<Node<Int>>) {
     if let head = heap.shiftDown(from: index) {
         shiftDown(from: head, heap: &heap)
     }
 }
-
+//#-end-editable-code
 
 // MARK: - View Model
 
@@ -118,6 +121,7 @@ class MaxHeapsort: ObservableObject {
     func reset(from array: [Node<Int>]) {
         heap.reset(from: array)
     }
+    
     //#-end-hidden-code
 }
 
@@ -206,7 +210,7 @@ extension ContentView {
         .frame(height: DrawingConstants.nodeSize + DrawingConstants.edgePadding)
         .padding(.leading, DrawingConstants.edgePadding / 2)
         .padding(.trailing, DrawingConstants.edgePadding / 2)
-        .background(Color.accentColor)
+        .background(Color.accentColor.opacity(0.6))
         .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding / 2, style: .continuous))
     }
     
@@ -221,7 +225,7 @@ extension ContentView {
                 .foregroundColor(.white)
         }
         .padding(DrawingConstants.edgePadding)
-        .background(Color.accentColor)
+        .background(Color.green)
         .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding, style: .continuous))
     }
 }
