@@ -210,7 +210,7 @@ extension ContentView {
         .frame(height: DrawingConstants.nodeSize + DrawingConstants.edgePadding)
         .padding(.leading, DrawingConstants.edgePadding / 2)
         .padding(.trailing, DrawingConstants.edgePadding / 2)
-        .background(Color.accentColor.opacity(0.6))
+        .background(Color.accentColor.opacity(0.75))
         .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding / 2, style: .continuous))
     }
     
@@ -225,7 +225,7 @@ extension ContentView {
                 .foregroundColor(.white)
         }
         .padding(DrawingConstants.edgePadding)
-        .background(Color.green)
+        .background(viewModel.isEmpty ? Color.secondary : Color.green)
         .clipShape(RoundedRectangle(cornerRadius: DrawingConstants.edgePadding, style: .continuous))
     }
 }

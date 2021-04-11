@@ -19,14 +19,22 @@ public struct TreeView: View {
     public var body: some View {
         VStack(alignment: .center) {
             NodeView(node: tree.value)
+                .padding(.top, DrawingConstants.edgePadding)
                 .anchorPreference(key: Key.self, value: .center) {
                     [self.tree.value.id: $0]
                 }
-            HStack(alignment: .top, spacing: DrawingConstants.nodeSize) {
+            
+            HStack(alignment: .center, spacing: DrawingConstants.nodeSize) {
                 ForEach(tree.children, id: \.value.id) { child in
                     TreeView(child)
                 }
+                
+                if tree.children.count < 2 {
+                    Spacer()
+                }
             }
+            
+            Spacer()
         }
         .backgroundPreferenceValue(Key.self) { (centers: [Node<Int>.ID: Anchor<CGPoint>]) in
             GeometryReader { proxy in
