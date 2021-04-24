@@ -27,6 +27,7 @@
 		EC12FBB32633531C0023929B /* MaxHeapsort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC12FBB22633531C0023929B /* MaxHeapsort.swift */; };
 		EC12FBD826335A560023929B /* libUserModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E6F7E742368FF15008CC191 /* libUserModule.a */; };
 		EC12FBFA263361890023929B /* libBookAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E6F7E612368FB6A008CC191 /* libBookAPI.a */; };
+		EC994D3F2633F72200065184 /* BuildSettings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5E0E37522065981C008FA4BE /* BuildSettings.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -140,7 +141,7 @@
 		5E086DCF2051DF0F004D8D25 /* Manifest.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Manifest.plist; sourceTree = "<group>"; };
 		5E0E37522065981C008FA4BE /* BuildSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildSettings.xcconfig; sourceTree = "<group>"; };
 		5E0E37542065A065008FA4BE /* README-PlaygroundTemplet.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "README-PlaygroundTemplet.md"; sourceTree = "<group>"; };
-		5E1004BE208E7F6E00BCFE70 /* LICENSE-PlaygroundTemplet.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "LICENSE-PlaygroundTemplet.txt"; sourceTree = "<group>"; };
+		5E1004BE208E7F6E00BCFE70 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		5E2A7AE6204F630600F4E17A /* BaseBuildSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BaseBuildSettings.xcconfig; sourceTree = "<group>"; };
 		5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewSupport.swift; sourceTree = "<group>"; };
 		5E551EC42371FC3F00784365 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -247,7 +248,7 @@
 		5E1004BD208E7F6E00BCFE70 /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
-				5E1004BE208E7F6E00BCFE70 /* LICENSE-PlaygroundTemplet.txt */,
+				5E1004BE208E7F6E00BCFE70 /* LICENSE.txt */,
 			);
 			path = LICENSE;
 			sourceTree = "<group>";
@@ -549,6 +550,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC994D3F2633F72200065184 /* BuildSettings.xcconfig in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
 				5E551EC52371FC3F00784365 /* Assets.xcassets in Resources */,
 			);
@@ -693,7 +695,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				INSTALL_PATH = /;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.MaxHeapPlaygroundBook;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.HeapsortPlayground;
 				PRODUCT_NAME = HeapsortPlayground;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -708,7 +710,7 @@
 				CURRENT_PROJECT_VERSION = "$(PLAYGROUND_BOOK_CONTENT_VERSION)";
 				INSTALL_PATH = /;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.MaxHeapPlaygroundBook;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.HeapsortPlayground;
 				PRODUCT_NAME = HeapsortPlayground;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -881,10 +883,11 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.MaxHeapLiveViewTestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.HeapsortLiveViewTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"\"$(OTHER_FRAMEWORKS_DIR)\"",
 					"$(inherited)",
@@ -909,9 +912,10 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.MaxHeapLiveViewTestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edu.cuhk.hys.HeapsortLiveViewTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"\"$(OTHER_FRAMEWORKS_DIR)\"",
 					"$(inherited)",

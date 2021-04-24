@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Version</key>
-	<string>7.0</string>
+	<string>8.0</string>
 	<key>ContentIdentifier</key>
 	<string>$(PLAYGROUND_BOOK_CONTENT_IDENTIFIER)</string>
 	<key>ContentVersion</key>
